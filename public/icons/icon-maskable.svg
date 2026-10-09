@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="skyM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf9ef"/>
+      <stop offset="35%" stop-color="#fbe08a"/>
+      <stop offset="70%" stop-color="#f7b93e"/>
+      <stop offset="100%" stop-color="#f2960f"/>
+    </linearGradient>
+  </defs>
+  <!-- maskableアイコンは端まで塗りつぶし、視認性を保つため主要な絵柄は中心の安全領域に収める -->
+  <rect width="512" height="512" fill="url(#skyM)"/>
+  <g transform="translate(78,78) scale(0.695)">
+    <!-- 太陽光線 -->
+    <g stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.45">
+      <line x1="356" y1="222" x2="356" y2="40"/>
+      <line x1="356" y1="222" x2="470" y2="70"/>
+      <line x1="356" y1="222" x2="540" y2="140"/>
+      <line x1="356" y1="222" x2="560" y2="222"/>
+      <line x1="356" y1="222" x2="540" y2="300"/>
+      <line x1="356" y1="222" x2="260" y2="60"/>
+      <line x1="356" y1="222" x2="440" y2="30"/>
+    </g>
+
+    <!-- 太陽 -->
+    <circle cx="356" cy="222" r="68" fill="#f7a91e"/>
+
+    <!-- 雲 -->
+    <g fill="#ffffff">
+      <ellipse cx="190" cy="362" rx="156" ry="112"/>
+      <circle cx="345" cy="312" r="106"/>
+      <ellipse cx="447" cy="382" rx="112" ry="86"/>
+      <rect x="66" y="352" width="432" height="112" rx="56"/>
+    </g>
+
+    <!-- 山 -->
+    <path d="M0 512 L0 468 L162 298 L262 400 L332 338 L512 258 L512 512 Z" fill="url(#skyM)"/>
+    <g stroke="#fdf9ef" stroke-width="7" stroke-linecap="round" opacity="0.9" fill="none">
+      <path d="M162 298 L26 438"/>
+      <path d="M332 338 L214 458"/>
+    </g>
+  </g>
+</svg>

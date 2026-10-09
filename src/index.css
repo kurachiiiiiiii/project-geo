@@ -1,0 +1,31 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+}
+
+body {
+  background: #0b1220;
+  color: #f5f7fb;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}

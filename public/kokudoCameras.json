@@ -1,0 +1,496 @@
+[
+  {
+    "id": "g01",
+    "name": "垂井町宮代",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.355301,
+    "lng": 136.522522,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52517_853x480.jpg"
+  },
+  {
+    "id": "g02",
+    "name": "関ヶ原町野上",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.366051,
+    "lng": 136.494568,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52519_853x480.jpg"
+  },
+  {
+    "id": "g03",
+    "name": "関ヶ原町西町",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.365536,
+    "lng": 136.46701,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52520_853x480.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "g04",
+    "name": "関ヶ原町山中",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.356194,
+    "lng": 136.44278,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52523_853x480.jpg"
+  },
+  {
+    "id": "g05",
+    "name": "関ケ原町今須",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.329498,
+    "lng": 136.434158,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52524_853x480.jpg"
+  },
+  {
+    "id": "g06",
+    "name": "関ヶ原町今須",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.329498,
+    "lng": 136.434158,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52525_853x480.jpg"
+  },
+  {
+    "id": "g07",
+    "name": "関ヶ原町関ヶ原",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道21号",
+    "lat": 35.368523,
+    "lng": 136.464996,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52531_853x480.jpg"
+  },
+  {
+    "id": "g08",
+    "name": "白川町坂ノ東",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道41号",
+    "lat": 35.603798,
+    "lng": 137.161728,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52555_853x480.jpg"
+  },
+  {
+    "id": "g09",
+    "name": "白川町河岐",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道41号",
+    "lat": 35.578255,
+    "lng": 137.194397,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52551_853x480.jpg"
+  },
+  {
+    "id": "g10",
+    "name": "七宗町上麻生",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道41号",
+    "lat": 35.567429,
+    "lng": 137.128418,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52541_853x480.jpg"
+  },
+  {
+    "id": "g11",
+    "name": "郡上市美並町上田",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道156号",
+    "lat": 35.628452,
+    "lng": 136.926865,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52563_853x480.jpg"
+  },
+  {
+    "id": "g12",
+    "name": "郡上市八幡町瀬取",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道156号",
+    "lat": 35.77562,
+    "lng": 136.934235,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52580_853x480.jpg"
+  },
+  {
+    "id": "g13",
+    "name": "郡上市大和町万場",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道156号",
+    "lat": 35.835495,
+    "lng": 136.875504,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/org037_853x480.jpg"
+  },
+  {
+    "id": "g14",
+    "name": "郡上市白鳥町中津屋",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道156号",
+    "lat": 35.853779,
+    "lng": 136.880859,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52584_853x480.jpg"
+  },
+  {
+    "id": "g15",
+    "name": "郡上市白鳥町大島",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道156号",
+    "lat": 35.861149,
+    "lng": 136.860443,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52585_853x480.jpg"
+  },
+  {
+    "id": "g16",
+    "name": "郡上市白鳥町向小駄良",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道158号(中部縦貫自動車道油坂峠道路)",
+    "lat": 35.87532,
+    "lng": 136.834641,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52587_640.jpg"
+  },
+  {
+    "id": "g17",
+    "name": "大野市東市布",
+    "office": "岐阜国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/gifu/traffic/livecamera.html",
+    "route": "国道158号(中部縦貫自動車道油坂峠道路)",
+    "lat": 35.872074,
+    "lng": 136.809433,
+    "imageUrl": "https://www.cbr.mlit.go.jp/gifu/cctv/cameraimage/52588_853x480.jpg"
+  },
+  {
+    "id": "t01",
+    "name": "上恵土",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.438972,
+    "lng": 137.076828,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C060N1L.jpg"
+  },
+  {
+    "id": "t02",
+    "name": "大庭交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.433643,
+    "lng": 137.120193,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C056N1L.jpg"
+  },
+  {
+    "id": "t03",
+    "name": "柿田交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.429703,
+    "lng": 137.09787,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C059N1L.jpg"
+  },
+  {
+    "id": "t04",
+    "name": "古屋敷",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.424042,
+    "lng": 137.111908,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C057N1L.jpg"
+  },
+  {
+    "id": "t05",
+    "name": "井尻",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.431366,
+    "lng": 137.153976,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C055N1L.jpg"
+  },
+  {
+    "id": "t06",
+    "name": "次月交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.407944,
+    "lng": 137.187698,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C038N1L.jpg"
+  },
+  {
+    "id": "t07",
+    "name": "道の駅志野・織部",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道21号",
+    "lat": 35.392582,
+    "lng": 137.187408,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C054N1L.jpg"
+  },
+  {
+    "id": "t08",
+    "name": "内津トンネル(上り)",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.328089,
+    "lng": 137.071026,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C001N1L.jpg"
+  },
+  {
+    "id": "t09",
+    "name": "内津トンネル(下り)",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.328089,
+    "lng": 137.071026,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C009N1L.jpg"
+  },
+  {
+    "id": "t10",
+    "name": "富士見(上り)",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.322651,
+    "lng": 137.094101,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C019N1L.jpg"
+  },
+  {
+    "id": "t11",
+    "name": "音羽交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.336761,
+    "lng": 137.118912,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C027N1L.jpg"
+  },
+  {
+    "id": "t12",
+    "name": "虎渓大橋",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.341513,
+    "lng": 137.137908,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C042N1L.jpg"
+  },
+  {
+    "id": "t13",
+    "name": "東町交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.340866,
+    "lng": 137.147232,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C043N1L.jpg"
+  },
+  {
+    "id": "t14",
+    "name": "土岐大橋",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.347733,
+    "lng": 137.175461,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C028N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t15",
+    "name": "大富交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.380173,
+    "lng": 137.183533,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C020N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t16",
+    "name": "明世高架橋",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.376549,
+    "lng": 137.233856,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C029N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t17",
+    "name": "茄子川",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.465088,
+    "lng": 137.456558,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C032N1L.jpg"
+  },
+  {
+    "id": "t18",
+    "name": "長島情報板",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.448338,
+    "lng": 137.387161,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C022N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t19",
+    "name": "恵那雪寒基地",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.449322,
+    "lng": 137.412811,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C045N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t20",
+    "name": "釜戸下切",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.406696,
+    "lng": 137.308578,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C044N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t21",
+    "name": "釜戸(上り)",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.406696,
+    "lng": 137.308578,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C031N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t22",
+    "name": "鶴城跨線橋",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.37978,
+    "lng": 137.279984,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C030N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t23",
+    "name": "中津川大橋",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.482632,
+    "lng": 137.501683,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C033N1L.jpg"
+  },
+  {
+    "id": "t24",
+    "name": "四つ目ランプ",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.455883,
+    "lng": 137.544708,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C046N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t25",
+    "name": "向山交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.497234,
+    "lng": 137.550537,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C035N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t26",
+    "name": "落合(登坂)",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.497234,
+    "lng": 137.550537,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C049N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t27",
+    "name": "山口(登坂)",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.560181,
+    "lng": 137.552872,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C066N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t28",
+    "name": "弥栄橋交差点",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.570657,
+    "lng": 137.535742,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C067N1L.jpg"
+  },
+  {
+    "id": "t29",
+    "name": "黍生洞門",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.560181,
+    "lng": 137.552872,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C068N1L.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、地名を国土地理院の地名検索APIで検索した座標(大字・町丁目単位)です。近傍の別地点と同じ座標になる場合があります。"
+  },
+  {
+    "id": "t30",
+    "name": "道の駅賤母",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.586197,
+    "lng": 137.550736,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C069N1L.jpg"
+  },
+  {
+    "id": "t31",
+    "name": "賤母大橋",
+    "office": "多治見砂防国道事務所",
+    "officeUrl": "https://www.cbr.mlit.go.jp/tajimi/desk/douro_live.html",
+    "route": "国道19号",
+    "lat": 35.585238,
+    "lng": 137.563688,
+    "imageUrl": "https://www.cbr.mlit.go.jp/tajimi/douro/camera/images/C090N1L.jpg"
+  }
+]

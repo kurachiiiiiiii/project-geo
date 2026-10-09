@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  「サーバー(プロキシ)が無いと動かない機能は、スマホ内で演算して自己完結させることは可能で
+  しょうか」という指示への対応(README「Android アプリ(geo watcher)」参照)で、ネイティブ
+  アプリから外部サイトへ直接アクセスするようにしたところ、信州大学 山岳観測所(shinshu、
+  ims.shinshu-u.ac.jp)・立山雄山山頂カメラ(jr9vq、www.jr9vq.org)の2サイトはHTTPS非対応
+  (平文HTTPのみ)のため、Android既定のクリアテキスト通信禁止ポリシーによりブロックされる
+  ことが実機検証で判明した(logcat: "Cleartext HTTP traffic to ims.shinshu-u.ac.jp not
+  permitted")。アプリ全体でクリアテキストを許可する(android:usesCleartextTraffic="true")
+  のではなく、実際に必要なこのドメインだけに限定して許可する。
+
+  【2026年9月の追記】信州大学(ims.shinshu-u.ac.jp)は同月中にHTTPS対応済みとなり、
+  HTTPアクセスはhttps://への301リダイレクトを返すようになった(「外部データ(shinshu)の
+  取得に失敗しました (HTTP 301)」というエラーで発覚。詳細はsrc/lib/nativeExternalSources.ts・
+  server/externalProxy.mjsのshinshuのコメント参照)。取得先自体をhttps://に切り替えたため、
+  このドメインはもうクリアテキストを必要としない。立山雄山(jr9vq)は引き続きHTTPS非対応の
+  ままのため、こちらのみ残す。
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">www.jr9vq.org</domain>
+    </domain-config>
+</network-security-config>

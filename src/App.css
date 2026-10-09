@@ -1,0 +1,2455 @@
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.map-view {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #0b1220;
+}
+
+/*
+  「UIを透明感のあるものにしてください」への対応。地図の上に浮かぶ各種パネル
+  (表示レイヤー・雨雲/衛星画像コントロール・トースト・ボトムシート・天文情報ポップアップ等)
+  に共通の、地図がうっすら透けて見えるすりガラス調(いわゆるglassmorphism)のトークン。
+  値をここで一元管理し、個々のクラスは背景色を塗りつぶさず var(--glass-*) を参照する。
+  Android実機(Capacitor、Chromium系WebView)・主要ブラウザとも backdrop-filter に対応済みだが、
+  念のため -webkit- 接頭辞つきでも指定し、万一未対応の環境でも半透明の背景色自体は効くようにする。
+*/
+:root {
+  /* 主要パネル(暗色チョコレート寄りの紺)向け */
+  --glass-bg: rgba(16, 24, 43, 0.52);
+  /* ボトムシートなど、内容が多く可読性を優先したい場所向けに少し濃いめ */
+  --glass-bg-strong: rgba(16, 24, 43, 0.75);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.06);
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+  /* ライブカメラ等、写真・映像を表示するポップアップ(元々白背景)向けの明るいすりガラス */
+  --glass-bg-light: rgba(255, 255, 255, 0.8);
+  --glass-blur-light: blur(16px) saturate(160%);
+}
+
+/*
+  「表示レイヤーがスマホの画面の上すぎてタップできません」という指摘への対応。
+  Androidアプリ(Capacitor)はステータスバーの裏側までWebViewが描画される(いわゆる
+  edge-to-edge)ため、ブラウザ(PWA)では気にならなかった固定top位置(12px等)が、
+  実機ではステータスバーの真下〜裏側に来てしまい、タップできない/隠れる不具合になっていた。
+  index.htmlの`viewport-fit=cover`は既に指定済みなので、`env(safe-area-inset-top)`で
+  実際のステータスバー等の高さぶんだけ追加で下にずらす(ブラウザでは0pxになるため無害)。
+*/
+
+.app__layer-controls {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: min(90vw, 240px);
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 24px);
+  overflow-y: auto;
+}
+
+/* 「川の防災」「アメダス」など、表示レイヤー一覧をグループ分けする見出し(表示専用) */
+.app__layer-group-header {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin-top: 4px;
+}
+
+.app__layer-group-header:first-of-type {
+  margin-top: 0;
+}
+
+.app__layer-toggle {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  color: #f5f7fb;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--glass-shadow);
+  flex: none;
+}
+
+/*
+  「雨雲を表示するのところを 衛星画像のタブと統合してください」への対応でRainLayerControl.tsxが
+  独自の外枠(旧.rain-control)を持たなくなった(SatelliteControl.tsx = .layer-control に埋め込み)
+  ため、このセレクタからは.rain-controlを外した。中の.rain-control__*(行・スライダー等)は
+  引き続き使っているので、そのクラス自体は残す。
+*/
+.layer-control {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 10px 14px;
+  border-radius: 10px;
+  min-width: 200px;
+  box-shadow: var(--glass-shadow);
+  font-size: 13px;
+}
+
+.layer-control__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.layer-control__status {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.layer-control__error {
+  color: #ff8080;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/*
+  「法律 利用規約に反するものはありますか」への回答を受け、気象庁・国土地理院・Open-Meteo
+  への出典表記を追加した際の共通スタイル(camera-popup__sourceはポップアップの明るい背景
+  向けの濃い文字色のため、layer-control系の暗い背景にはこちらを使う)。
+*/
+.layer-control__source {
+  font-size: 11px;
+  opacity: 0.75;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.layer-control__source a {
+  color: #9fc4ff;
+}
+
+.kougen-tenki__generate {
+  display: block;
+  width: 100%;
+  background: #f43f5e;
+  margin: 4px 0 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+}
+
+.kougen-tenki__generate:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/*
+  .slider-range-label は元々 .kougen-tenki__slider-range-label だけだったものを、
+  衛星画像の時刻スライダー(「3時間前まで確認できるようにしてください」対応)でも
+  同じ見た目のラベルが欲しかったため、機能を問わない汎用クラス名として切り出したもの。
+*/
+.kougen-tenki__slider-range-label,
+.slider-range-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  opacity: 0.65;
+  margin: -2px 0 4px;
+}
+
+.kougen-tenki__kind {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.kougen-tenki__kind--observed {
+  background: rgba(34, 197, 94, 0.25);
+  color: #86efac;
+}
+
+.kougen-tenki__kind--forecast {
+  background: rgba(250, 204, 21, 0.25);
+  color: #fde047;
+}
+
+/* 高原天気: Open-Meteoの取得に失敗し、実測トレンド延長にフォールバックしたことを示す注記 */
+.kougen-tenki__fallback-note {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 10px;
+  opacity: 0.75;
+  color: #fca5a5;
+}
+
+/* 高原天気: 犬山自動気象観測所の追加成功/失敗を目立たせる(通常のstatus文字より少し強調) */
+.kougen-tenki__inuyama-status {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* 高原天気: 10時間に1回までの制限中である旨の案内(注意を引くよう黄系で強調) */
+.kougen-tenki__cooldown {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  padding: 4px 6px;
+  opacity: 1;
+}
+
+/* 高原天気: 地図上でのホバー値を目立たせる */
+.kougen-tenki__hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  padding: 4px 6px;
+  opacity: 1;
+}
+
+.metric-legend {
+  margin-top: 6px;
+}
+
+.metric-legend__bar {
+  height: 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.metric-legend__ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.layer-control__select {
+  width: 100%;
+  margin-top: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+  border: none;
+}
+
+.rain-control__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+/* 高原天気: 過去に生成したデータ(IndexedDBの履歴)を選んで読み込む行 */
+.kougen-tenki__history-row {
+  flex-wrap: wrap;
+}
+
+.kougen-tenki__history-select {
+  flex: 1;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  border-radius: 6px;
+  padding: 3px 4px;
+  font-size: 12px;
+  border: none;
+}
+
+/*
+  高原天気: 現在地の1日の気温・霧リスク一覧(「現在地の1日の気温と天気も表示されるように
+  してください」対応)。24コマぶん横に並ぶため、パネル幅に収まらない分は横スクロールにする。
+*/
+.kougen-tenki__current-location {
+  margin: 6px 0;
+}
+
+.kougen-tenki__current-location-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  margin-top: 4px;
+}
+
+.kougen-tenki__current-location-item {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  padding: 4px 6px;
+  color: #f5f7fb;
+  font-size: 11px;
+  cursor: pointer;
+  min-width: 42px;
+  border: none;
+}
+
+.kougen-tenki__current-location-item--selected {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.kougen-tenki__current-location-time {
+  opacity: 0.75;
+  font-size: 10px;
+}
+
+.kougen-tenki__current-location-temp {
+  font-weight: 700;
+}
+
+.kougen-tenki__current-location-fog {
+  font-size: 10px;
+  opacity: 0.8;
+  color: #cbd5e1;
+}
+
+.rain-control__label {
+  white-space: nowrap;
+}
+
+.rain-control__slider {
+  flex: 1;
+}
+
+.rain-control__play {
+  background: #2b6fef;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 3px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.rain-control__time {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.app__toast {
+  position: absolute;
+  /* .app__hintと同じ理由で、常時表示の衛星画像バーの上に重ならないよう底上げする */
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px + var(--satellite-bar-reserve, 0px));
+  left: 12px;
+  z-index: 1000;
+  background: rgba(90, 20, 20, 0.7);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  max-width: min(90vw, 400px);
+}
+
+.app__hint {
+  position: absolute;
+  /* 画面下に常時表示する衛星画像バー(.app__satellite-bar)の上に重ならないよう、
+     その分だけ底上げする(下の--satellite-bar-reserveの説明を参照)。 */
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px + var(--satellite-bar-reserve, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  color: #cfd8ea;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/*
+  「衛星画像のタブなのですが 表示レイヤーからなくして 画面の下に常に表示されるように
+  してください」という指示への対応。以前は「表示レイヤー」一覧(タップ/クリックしないと
+  開かない場所)の中にあったが、画面下に常時表示するバーとして独立させた。
+  中の.layer-controlパネル(既存の暗い角丸ボックスと同じ見た目)を画面下中央に固定し、
+  高さが伸びた場合のみパネル内をスクロールさせる(バー自体の位置がガタつかないように)。
+  外側の.app__satellite-bar自体はクリックを奪わないtransparentな帯にし、
+  中のパネルだけがクリックを受け付ける(地図の操作を妨げないため)。
+  --satellite-bar-reserveは.app__hint/.app__toastがこのバーの上に重ならないよう底上げする
+  ための、バーの実際の高さ(App.tsxのResizeObserverで測定し、中身の増減(エラー表示など)に
+  合わせて追従させている)。JS実行前・測定前の初期値としてこのフォールバック値を用意している。
+*/
+:root {
+  --satellite-bar-reserve: 210px;
+}
+
+.app__satellite-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.app__satellite-bar .layer-control {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 420px;
+  max-height: min(46vh, 380px);
+  overflow-y: auto;
+}
+
+/*
+  スマホ版の「表示レイヤー」「天文情報」を画面下からせり上がらせて表示するための共通の
+  ボトムシート(BottomSheet.tsx)。「表示レイヤーはタップしたときに下に出てくるように
+  してください また 天文情報も下からスクロールしてでてくるようにして 両方とも少し
+  ちいさくしてください」という指示への対応。
+*/
+.bottom-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1400;
+  animation: bottom-sheet-fade-in 0.2s ease-out;
+}
+
+.bottom-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  /* 「少しちいさく」という指示により、画面の高さの半分・420pxのどちらか小さい方を上限にする */
+  max-height: min(50vh, 420px);
+  /* 背景はほぼ不透明にする(下に重なる衛星画像のバーや、別のシート(天文情報の上に表示レイヤー)の文字が透けて読みにくくならないように。
+     ぼかし(backdrop-filter)が効かない端末でも読める) */
+  background: rgba(16, 24, 43, 0.96);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top: var(--glass-border);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  animation: bottom-sheet-slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+  タイトル・閉じるボタンは本文と切り離した専用の行にし、flex-shrink:0でスクロールに
+  巻き込まれないようにする(閉じるボタンが常に見える位置に固定される、この構成の要)。
+*/
+.bottom-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 10px 8px 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.bottom-sheet__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f5f7fb;
+}
+
+.bottom-sheet__close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bottom-sheet__body {
+  overflow-y: auto;
+  padding: 12px 16px;
+  color: #f5f7fb;
+  font-size: 13px;
+}
+
+/* 読み物用の背の高いシート(出典・ライセンス) */
+.bottom-sheet--tall {
+  max-height: 85vh;
+}
+
+/* 出典・ライセンス(CreditsSheet.tsx) */
+.credits {
+  line-height: 1.65;
+}
+.credits h3 {
+  margin: 14px 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f5f7fb;
+}
+.credits section:first-child h3 {
+  margin-top: 0;
+}
+.credits p {
+  margin: 0 0 8px;
+  color: #d5dbe8;
+}
+.credits ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #d5dbe8;
+}
+.credits li {
+  margin-bottom: 6px;
+}
+.credits a {
+  color: #9cc7ff;
+  word-break: break-all;
+}
+.credits__button,
+.credits__open {
+  border: var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  font-size: 13px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.credits__error {
+  color: #ffb4a8;
+}
+.credits__licenses {
+  margin: 6px 0 0;
+  padding: 8px;
+  max-height: 50vh;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  font-size: 10.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #cfd6e4;
+}
+
+@keyframes bottom-sheet-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bottom-sheet-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-sheet,
+  .bottom-sheet__backdrop {
+    animation: none;
+  }
+}
+
+/* 天文情報は地図の吹き出し(Leaflet popup)の中に描画される */
+.astro-panel {
+  color: #f5f7fb;
+  font-size: 13px;
+}
+
+/* 吹き出しを開くときのアニメーション(約1秒)。下から浮かび上がって開く
+   注意: `.leaflet-popup` 自身には transform や animation を付けないこと。
+   Leaflet が吹き出しをクリック地点に位置決めするのに `.leaflet-popup` の
+   インラインstyleでtransform(translate3d)を使っており、同じ要素に
+   transformを動かすCSSアニメーションを重ねると位置決め用のtransformを
+   丸ごと上書きしてしまい、クリックした場所と無関係な位置(左上寄り)に
+   吹き出しが表示される不具合になる。アニメーションは内側の
+   leaflet-popup-content-wrapper / leaflet-popup-tip-container にだけ適用する。 */
+.leaflet-popup.astro-popup .leaflet-popup-content-wrapper,
+.leaflet-popup.astro-popup .leaflet-popup-tip {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  color: #f5f7fb;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-popup.astro-popup .leaflet-popup-content-wrapper {
+  animation: astro-popup-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom center;
+}
+
+.leaflet-popup.astro-popup .leaflet-popup-tip-container {
+  animation: astro-popup-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom center;
+}
+
+/*
+  ライブカメラ等(camera-popup)は上の.astro-popupのような専用クラスを持たない、Leaflet既定の
+  白背景ポップアップをそのまま使っている。「UIを透明感のあるものにしてください」への対応で、
+  こちらにも明るいすりガラス調を適用する。`.leaflet-popup.astro-popup ...`(上の2ルール)は
+  詳細度がこれより高いため、天文情報ポップアップは引き続き専用の暗いすりガラスのままになる。
+*/
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--glass-bg-light);
+  backdrop-filter: var(--glass-blur-light);
+  -webkit-backdrop-filter: var(--glass-blur-light);
+}
+
+.leaflet-popup.astro-popup .leaflet-popup-close-button {
+  color: #f5f7fb;
+  font-size: 20px;
+  width: 26px;
+  height: 26px;
+  padding: 4px 0 0 0;
+}
+
+@keyframes astro-popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 動きを減らす設定の利用者にはアニメーションを出さない */
+@media (prefers-reduced-motion: reduce) {
+  .leaflet-popup.astro-popup .leaflet-popup-content-wrapper,
+  .leaflet-popup.astro-popup .leaflet-popup-tip-container {
+    animation: none;
+  }
+}
+
+.astro-panel__coords {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.astro-panel__kougen-tenki {
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.astro-panel__kougen-tenki-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.astro-panel__kougen-tenki-value {
+  margin-top: 4px;
+}
+
+.astro-panel__kougen-tenki-note {
+  display: block;
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.astro-panel__date-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.astro-panel__date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.astro-panel__date input[type="date"] {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  border-radius: 6px;
+  padding: 4px 8px;
+  border: none;
+}
+
+.astro-panel__calendar-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+}
+
+.astro-panel__list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  font-size: 13px;
+  margin: 0 0 16px;
+}
+
+.astro-panel__list dt {
+  opacity: 0.7;
+}
+
+.astro-panel__list dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.astro-panel__milkyway h3 {
+  font-size: 14px;
+  margin: 0 0 4px;
+}
+
+.astro-panel__hint {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 0 0 8px;
+}
+
+.astro-panel__milkyway ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.astro-panel__milkyway li {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.astro-panel__none {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.astro-panel__warning {
+  font-size: 12px;
+  color: #ffb454;
+  margin: 6px 0 0;
+}
+
+.astro-panel__azimuth {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.astro-panel__direction {
+  margin-top: 12px;
+}
+
+.astro-panel__direction h3 {
+  font-size: 14px;
+  margin: 0 0 4px;
+}
+
+.astro-panel__direction-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.astro-panel__direction-table th {
+  text-align: left;
+  opacity: 0.6;
+  font-weight: 400;
+  padding: 2px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.astro-panel__direction-table td {
+  padding: 3px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.astro-panel__direction-row {
+  cursor: pointer;
+}
+
+.astro-panel__direction-row:hover td {
+  background: #16233d;
+}
+
+.astro-panel__direction-row--visible td {
+  color: #7fd6ff;
+  font-weight: 600;
+}
+
+.astro-panel__direction-row--selected td {
+  background: #3a2a55;
+  color: #d8b4fe;
+  font-weight: 600;
+}
+
+.astro-panel__slider-row {
+  margin: 4px 0 6px;
+}
+
+.astro-panel__hour-slider {
+  width: 100%;
+  accent-color: #c084fc;
+  cursor: pointer;
+}
+
+.astro-panel__slider-value {
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
+.astro-panel__visible-badge {
+  margin-left: 8px;
+  background: #223055;
+  color: #7fd6ff;
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.astro-panel__note {
+  font-size: 11px;
+  opacity: 0.5;
+  margin-top: 16px;
+}
+
+/* 地図上に描く方角の線のラベル(Leafletの既定は白背景の吹き出し型なので、
+   アプリのダークテーマに合わせて上書きする) */
+.leaflet-tooltip.astro-ray-tooltip {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: #f5f7fb;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+}
+
+.leaflet-tooltip.astro-ray-tooltip::before {
+  display: none;
+}
+
+/*
+  「現在の月と太陽の線を光らせてください」への対応。地図上の太陽・月の方角の線
+  (AstroPointPopup.tsxのTimeDirectionRay、glowClassName付き)に、その色のドロップ
+  シャドウを重ねてゆっくり明滅させ、ネオン風に光っているように見せる。天の川の線・
+  日の出没/月の出没の固定線は対象外(このクラス自体を付けていない)。
+  Leafletのpath(SVG)はズーム・パンのたびに位置属性が更新されるだけでDOM要素自体は
+  再生成されないため、CSSアニメーションは中断されず続く。
+*/
+.astro-ray--glow-sun {
+  animation: astro-ray-glow-sun 2.4s ease-in-out infinite;
+}
+
+.astro-ray--glow-moon {
+  animation: astro-ray-glow-moon 2.4s ease-in-out infinite;
+}
+
+@keyframes astro-ray-glow-sun {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px #ffb454) drop-shadow(0 0 6px #ffb454);
+  }
+  50% {
+    filter: drop-shadow(0 0 6px #ffb454) drop-shadow(0 0 16px #ffb454);
+  }
+}
+
+@keyframes astro-ray-glow-moon {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px #7fd6ff) drop-shadow(0 0 6px #7fd6ff);
+  }
+  50% {
+    filter: drop-shadow(0 0 6px #7fd6ff) drop-shadow(0 0 16px #7fd6ff);
+  }
+}
+
+/* 動きを減らす設定の利用者には明滅させず、控えめな固定の光にする */
+@media (prefers-reduced-motion: reduce) {
+  .astro-ray--glow-sun {
+    animation: none;
+    filter: drop-shadow(0 0 4px #ffb454) drop-shadow(0 0 10px #ffb454);
+  }
+  .astro-ray--glow-moon {
+    animation: none;
+    filter: drop-shadow(0 0 4px #7fd6ff) drop-shadow(0 0 10px #7fd6ff);
+  }
+}
+
+/*
+  シンプルな色付きマーカー(全レイヤー共通)。データの種類が一目で分かるよう形状を使い分けている。
+  「カメラの表示レイヤーを統一してください 形も丸のみにしてください」への対応で、
+  カメラ系レイヤーは(色は出典ごとに変えたまま)すべて丸(.dot-marker)に統一した。
+  四角(.dot-marker--square)はアメダス観測所用、星(.star-marker)は信州大学山岳観測所用と、
+  カメラではなく観測値を示すレイヤーはこれまで通り区別している。
+*/
+.dot-marker,
+.value-marker,
+.star-marker {
+  background: transparent;
+  border: none;
+}
+
+.dot-marker span,
+.value-marker__dot {
+  display: block;
+  width: var(--dot-size, 22px);
+  height: var(--dot-size, 22px);
+  border-radius: 50%;
+  background: var(--dot-color, #2b6fef);
+  border: 2.5px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* アメダス観測所用の四角マーカー */
+.dot-marker--square span,
+.value-marker--square .value-marker__dot {
+  border-radius: 6px;
+}
+
+/* 観測値をドットの右に並べて表示するマーカー(アメダス・山岳観測所) */
+.value-marker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  /* iconSizeはドット分しか確保されないので、ラベルがはみ出しても隠れないようにする */
+  overflow: visible;
+}
+
+.value-marker__dot {
+  flex: none;
+}
+
+.value-marker__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f5f7fb;
+  background: rgba(11, 18, 32, 0.82);
+  padding: 1px 5px;
+  border-radius: 5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/*
+  「現在地を取得するボタンを追加してください」対応。Googleマップ等でおなじみの
+  「青い点+外に広がる輪」の現在地マーカー(MapView.tsxのcurrentLocationIcon)。
+*/
+.current-location-marker {
+  background: transparent;
+  border: none;
+}
+
+.current-location-marker__dot {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+}
+
+.current-location-marker__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.45);
+  animation: current-location-pulse 2s ease-out infinite;
+}
+
+@keyframes current-location-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/*
+  「ライブカメラ&天の川マップの表記はいらないです」への対応で.app__title(左上のタイトル
+  バッジ)を削除したのに合わせ、その位置にあったこのボタンをtop:+56px→+12pxへ詰めた。
+*/
+.app__locate-button {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  left: 12px;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  color: #f5f7fb;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--glass-shadow);
+}
+
+/*
+  「検索機能を追加する」への対応(PlaceSearch.tsx)。左上の「現在地を取得」ボタンの右隣に置く(Android版はボタンが無いので左端)。
+  候補の一覧は入力欄の下に重ねて出す(左上の樹種チェックリストより手前)。
+*/
+.place-search {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  left: 140px;
+  z-index: 1001;
+  width: min(300px, calc(100vw - 140px - 140px));
+  min-width: 120px;
+}
+
+.place-search--left {
+  left: 12px;
+  width: min(300px, calc(100vw - 12px - 140px));
+}
+
+.place-search__box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 6px 0 10px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 10px;
+  box-shadow: var(--glass-shadow);
+  color: #f5f7fb;
+  font-size: 12px;
+}
+
+.place-search__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #f5f7fb;
+  font-size: 13px;
+}
+
+.place-search__input::placeholder {
+  color: rgba(245, 247, 251, 0.6);
+}
+
+/* ブラウザ標準の消去ボタンは使わない(自前のボタンを出す) */
+.place-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.place-search__clear {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: rgba(245, 247, 251, 0.75);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.place-search__list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 4px;
+  width: max(100%, min(320px, calc(100vw - 24px)));
+  max-height: min(60dvh, 420px);
+  overflow-y: auto;
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 10px;
+  box-shadow: var(--glass-shadow);
+}
+
+.place-search__item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #f5f7fb;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.place-search__item--active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.place-search__kind {
+  flex: none;
+  font-size: 11px;
+  color: rgba(245, 247, 251, 0.6);
+}
+
+.place-search__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.place-search__note {
+  padding: 7px 8px;
+  font-size: 12px;
+  color: rgba(245, 247, 251, 0.7);
+}
+
+.app__locate-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/*
+  .app__toastは既定でbottom:12pxに置かれるが、位置情報エラーはボタンのすぐ下に出したいので
+  上書きする。「ライブカメラ&天の川マップ」の表記(.app__title)を削除したのに合わせて
+  .app__locate-buttonを画面最上部(+12px)へ詰めたため、その直下に来るよう合わせて詰めた。
+*/
+.app__toast--location {
+  top: calc(env(safe-area-inset-top, 0px) + 52px);
+  bottom: auto;
+  left: 12px;
+}
+
+.camera-popup {
+  /* ライブカメラのポップアップは映像を見るものなので大きめに取る */
+  width: 520px;
+  max-width: calc(100vw - 60px);
+}
+
+/* 映像を持たないポップアップ(アメダス)は広げる必要がないので元の幅に戻す */
+.camera-popup--compact {
+  width: 240px;
+}
+
+.camera-popup__title {
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #0b1220;
+}
+
+.camera-popup__media {
+  width: 100%;
+}
+
+.camera-popup__frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 6px;
+  display: block;
+}
+
+.camera-popup__image {
+  width: 100%;
+  border-radius: 6px;
+  display: block;
+}
+
+.camera-popup__source {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 6px;
+  color: #0b1220;
+}
+
+/* 道路情報提供システムの最寄り観測局の気温(camera-popup__title の直下に出す) */
+.camera-popup__weather {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0b1220;
+  margin-bottom: 6px;
+}
+
+.camera-popup__weather-note {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.65;
+}
+
+.camera-popup__link {
+  display: inline-block;
+  background: #2b6fef;
+  color: #fff;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.camera-popup__note {
+  font-size: 11px;
+  color: #0b1220;
+  opacity: 0.8;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.camera-popup__route {
+  font-size: 11px;
+  opacity: 0.75;
+  color: #0b1220;
+  margin-bottom: 6px;
+}
+
+.camera-popup__gifu-images {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.camera-popup__gifu-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.camera-popup__gifu-caption {
+  font-size: 11px;
+  color: #0b1220;
+  opacity: 0.8;
+}
+
+.camera-popup__status {
+  font-size: 12px;
+  color: #0b1220;
+  opacity: 0.75;
+  padding: 8px 0;
+}
+
+.camera-popup__elevation {
+  font-weight: 400;
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+.camera-popup__weather-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+  font-size: 12px;
+  color: #0b1220;
+}
+
+/* leaflet.markercluster の既定スタイルをダークテーマに合わせて上書き */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background-color: rgba(43, 111, 239, 0.35);
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background-color: rgba(43, 111, 239, 0.85);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ===== 天の川カレンダー ===== */
+.astro-calendar {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+
+.astro-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.astro-calendar__title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.astro-calendar__nav {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f7fb;
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.astro-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.astro-calendar__grid--weekdays {
+  margin-bottom: 4px;
+}
+
+.astro-calendar__weekday {
+  text-align: center;
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.astro-calendar__day {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: rgba(43, 111, 239, var(--intensity, 0));
+  color: #f5f7fb;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.astro-calendar__day--selected {
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+}
+
+.astro-calendar__hint {
+  font-size: 10px;
+  opacity: 0.6;
+  margin: 6px 0 0;
+}
+
+/*
+  「衛星画像で雲のある部分を5キロメッシュで判定して...」への対応。CloudMeshLayer.tsxの
+  グリッド画像(セル1つ=1ピクセルの小さいcanvasをそのままImageOverlayとして拡大表示する)を
+  ブラウザの既定の補間(にじむ)ではなく、くっきりしたマス目のまま拡大表示させる。
+*/
+.cloud-mesh-overlay {
+  image-rendering: pixelated;
+}
+
+/*
+  最上位のエラー境界(ErrorBoundary.tsx)のフォールバック画面。地図が描画される前の
+  状態でも読めるよう、.map-viewと同じ暗い背景色をここでも明示的に敷いている。
+*/
+.app-error-boundary {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0b1220;
+  color: #e5e9f0;
+  padding: 24px;
+  z-index: 9999;
+}
+
+.app-error-boundary__box {
+  max-width: 360px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.app-error-boundary__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.app-error-boundary__message {
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin: 0 0 8px;
+}
+
+.app-error-boundary__detail {
+  font-size: 11px;
+  opacity: 0.6;
+  word-break: break-word;
+  margin: 0 0 16px;
+}
+
+.app-error-boundary__reload {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.app-error-boundary__reload:hover {
+  background: #2563eb;
+}
+
+/*
+  紅葉マップ(KoyoControl.tsx)。既存の.layer-control系の見た目に合わせ、表・凡例・地域別スライダーだけ追加している。
+*/
+.koyo {
+  max-width: 340px;
+}
+
+.koyo__date {
+  min-width: 3.2em;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.koyo__button {
+  display: block;
+  margin: 6px 0 2px;
+}
+
+.koyo__button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.koyo__details {
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 6px;
+}
+
+.koyo__details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.koyo__errors {
+  margin: 4px 0 0;
+  padding-left: 16px;
+  font-size: 11px;
+  color: #ffb4b4;
+}
+
+.koyo__muted {
+  font-size: 11px;
+  opacity: 0.72;
+}
+
+.koyo__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.koyo__legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.koyo__legend-basis {
+  margin-left: 20px;
+  line-height: 1.4;
+}
+
+.koyo__swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  flex: none;
+}
+
+.koyo__swatch--unripe {
+  background: #60b635;
+}
+
+.koyo__swatch--fallen {
+  background: #957a50;
+}
+
+.koyo__swatch--evergreen {
+  background: #0e7d34;
+}
+
+.koyo__region {
+  margin: 8px 0 0;
+}
+
+.koyo__region-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.koyo__region-slider {
+  width: 100%;
+  margin: 2px 0 0;
+}
+
+.koyo__region-source {
+  margin-top: -2px;
+}
+
+.koyo__table-wrap {
+  overflow-x: auto;
+  margin-top: 6px;
+}
+
+.koyo__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.koyo__table th,
+.koyo__table td {
+  padding: 3px 5px;
+  text-align: right;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  white-space: nowrap;
+}
+
+.koyo__table th:first-child,
+.koyo__table td:first-child {
+  text-align: left;
+}
+
+.koyo__table th {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.koyo__row--mine td {
+  background: rgba(255, 190, 70, 0.18);
+  font-weight: 600;
+}
+
+.koyo__point {
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 6px;
+}
+
+.koyo__point-title {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/*
+  「紅葉情報の 今日の部分が見切れています」への対応。
+  右上の表示レイヤーパネルは幅が最大240pxなのに対し、日付スライダー(input[type=range])は
+  既定の最小幅(約130px)より縮まないため、「今日」ボタンがパネルの右へはみ出して切れていた
+  (「全地域を一括」のスライダーも同様)。スライダーを縮められるようにし(min-width:0)、
+  ボタンは縮めず折り返さない(nowrap)ことで、同じ行に収める。
+*/
+.koyo .rain-control__row {
+  min-width: 0;
+}
+
+.koyo .rain-control__slider {
+  min-width: 0;
+}
+
+.koyo .rain-control__play {
+  flex: none;
+  white-space: nowrap;
+}
+
+/*
+  地図の左上に出す、紅葉の樹種ごとのチェックリスト(KoyoSpeciesChecklist.tsx)。
+  左上の「現在地を取得」ボタン(高さ約32px)のすぐ下に置く。Android版はそのボタンが無いので上端に詰める。
+*/
+.koyo-species {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 52px);
+  left: 12px;
+  z-index: 999;
+  min-width: 0;
+  width: 230px;
+  max-width: min(60vw, 260px);
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 64px - var(--satellite-bar-reserve, 0px));
+  overflow-y: auto;
+  padding: 8px 10px;
+}
+
+/* Android版(現在地ボタン無し)は、左上の1行目に検索欄があるので、その下に置く */
+.koyo-species--top {
+  top: calc(env(safe-area-inset-top, 0px) + 52px);
+}
+
+.koyo-species__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.koyo-species__count {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.koyo-species__bulk {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0 4px;
+}
+
+.koyo-species__bulk-button {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 3px 4px;
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.koyo-species__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.koyo-species__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.koyo-species__swatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.koyo-species__name {
+  min-width: 0;
+  line-height: 1.25;
+}
+
+/* 天文情報パネル内の「紅葉・植生(推定)」(AstroKoyoSection.tsx)。見た目は気温ブロックに合わせる */
+.astro-panel__koyo-veg,
+.astro-panel__koyo-peak {
+  margin-top: 4px;
+}
+
+.astro-panel__koyo-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 10px;
+  margin: 6px 0 2px;
+  font-size: 13px;
+}
+
+.astro-panel__koyo-list dt {
+  opacity: 0.75;
+}
+
+.astro-panel__koyo-list dd {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3Dビューワー(クリックした地点から360°見渡す。src/components/Viewer3D.tsx)
+ * 全画面のオーバーレイ。天文情報のシート(〜1500)や地図の部品(〜9999)より前に出す。
+ * ------------------------------------------------------------------------- */
+.astro-panel__view3d {
+  display: block;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 9px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.astro-panel__view3d:active {
+  filter: brightness(0.92);
+}
+
+.viewer3d {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  background: #0b1424;
+  color: #fff;
+  font-family: system-ui, "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.viewer3d--message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewer3d__stage {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.viewer3d__stage:active {
+  cursor: grabbing;
+}
+
+.viewer3d__gl,
+.viewer3d__ov {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.viewer3d__ov {
+  pointer-events: none;
+}
+
+.viewer3d__top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /*
+    iPhone(ホーム画面に追加したアプリ)では、画面の上端が時刻・電波・電池の表示(ステータスバー)の下まで広がる。
+    上端・左右の「安全領域」(env(safe-area-inset-*))の分だけバーを下げ・内側に寄せて、右端の×ボタンが
+    ステータスバーや画面の角に重なって押せなくなるのを防ぐ。バーの高さ(46px)は、安全領域を足したものになる(Viewer3D.tsx)。
+  */
+  padding: env(safe-area-inset-top, 0px) max(14px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(to bottom, rgba(8, 14, 28, 0.85), rgba(8, 14, 28, 0.45));
+}
+
+.viewer3d__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.viewer3d__title-main {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer3d__title-sub {
+  font-size: 11px;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer3d__modes {
+  display: flex;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.viewer3d__btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.viewer3d__btn--on {
+  background: #2563eb;
+}
+
+.viewer3d__close {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  margin-left: 2px;
+  font-size: 22px;
+  line-height: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* 指でさわる画面(スマホ)では、×ボタンをさわりやすい大きさ(40px)にする */
+@media (pointer: coarse) {
+  .viewer3d__close {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+}
+
+.viewer3d__loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 220px;
+  max-width: 86vw;
+  padding: 18px 22px;
+  text-align: center;
+  background: rgba(10, 18, 36, 0.88);
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.viewer3d--message .viewer3d__loading {
+  position: static;
+  transform: none;
+}
+
+.viewer3d__loading--error {
+  align-items: stretch;
+  width: min(92vw, 560px);
+  max-width: 92vw;
+  max-height: 82vh;
+  overflow: auto;
+  box-sizing: border-box;
+  text-align: left;
+  background: rgba(70, 20, 20, 0.96);
+  border: 1px solid rgba(255, 140, 140, 0.55);
+  border-radius: 12px;
+}
+
+.viewer3d__err-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.viewer3d__err-msg {
+  font-size: 14px;
+  line-height: 1.6;
+  user-select: text;
+  word-break: break-word;
+}
+
+.viewer3d__err-label {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.viewer3d__err-code {
+  margin: 0;
+  padding: 8px 10px;
+  max-height: 38vh;
+  overflow: auto;
+  font: 13px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color: #fff;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  user-select: text;
+}
+
+.viewer3d__loading-sub {
+  font-size: 12px;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+.viewer3d__spinner {
+  width: 26px;
+  height: 26px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #60a5fa;
+  border-radius: 50%;
+  animation: viewer3d-spin 0.9s linear infinite;
+}
+
+@keyframes viewer3d-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.viewer3d__chips {
+  position: absolute;
+  left: max(8px, env(safe-area-inset-left, 0px));
+  bottom: 62px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.viewer3d__diag {
+  position: absolute;
+  left: max(8px, env(safe-area-inset-left, 0px));
+  right: max(8px, env(safe-area-inset-right, 0px));
+  top: calc(env(safe-area-inset-top, 0px) + 56px);
+  z-index: 4;
+  max-width: 520px;
+  max-height: 60%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  background: rgba(40, 24, 10, 0.94);
+  border: 1px solid rgba(255, 176, 80, 0.6);
+  border-radius: 10px;
+}
+
+.viewer3d__diag-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.viewer3d__diag-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.viewer3d__diag-text {
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  font: 12px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  user-select: text;
+}
+
+.viewer3d__chip {
+  padding: 3px 9px;
+  font-size: 11px;
+  background: rgba(10, 18, 36, 0.78);
+  border-radius: 999px;
+}
+
+.viewer3d__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  box-sizing: border-box;
+  max-width: 560px;
+  margin: 0 auto;
+  background: rgba(10, 18, 36, 0.9);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.viewer3d__panel-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.viewer3d__panel-time {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+.viewer3d__panel-body {
+  max-height: 46vh;
+  overflow-y: auto;
+  padding: 0 14px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.viewer3d__sec {
+  padding: 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.viewer3d__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.viewer3d__row--wrap {
+  flex-wrap: wrap;
+}
+
+.viewer3d__lbl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.viewer3d__lbl input[type="date"] {
+  padding: 3px 6px;
+  font-size: 13px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color-scheme: dark;
+  border: none;
+}
+
+.viewer3d__time {
+  margin-left: auto;
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.viewer3d__range {
+  width: 100%;
+  margin: 4px 0 8px;
+  accent-color: #60a5fa;
+}
+
+.viewer3d__range--time {
+  display: block;
+  box-sizing: border-box;
+  width: calc(100% - 28px);
+  margin: 0 14px 10px;
+}
+
+.viewer3d__slider {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.viewer3d__readout {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.viewer3d__link {
+  flex: 0 0 auto;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.viewer3d__check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.viewer3d__note {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.6;
+  opacity: 0.7;
+}
+
+/* 出典のリンク(暗い背景でも読める色に) */
+.viewer3d__note a {
+  color: #9cc7ff;
+}
+
+@media (max-width: 720px) {
+  .viewer3d__btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .viewer3d__panel-body {
+    max-height: 52vh;
+  }
+}
+
+/* 3Dビューワー: 画面下の常時表示バー(日付・時刻スライダー)・地面/霧/天の川の設定 */
+.viewer3d__bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px 4px;
+}
+
+.viewer3d__bar-lbl {
+  flex: 0 0 auto;
+  min-width: 5.6em;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.viewer3d__bar-lbl--time {
+  margin-left: 34px;
+  margin-right: 0;
+}
+
+.viewer3d__bar-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.viewer3d__bar-check input {
+  margin: 0;
+}
+
+.viewer3d__bar-val {
+  flex: 0 0 auto;
+  min-width: 3.6em;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.viewer3d__range:disabled {
+  opacity: 0.4;
+}
+
+.viewer3d__range--bar {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.viewer3d__step {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  font-size: 11px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+
+/* 指で押す画面では、小さなボタン(日付・時刻の送りなど)を押しやすい大きさにする */
+@media (pointer: coarse) {
+  .viewer3d__step {
+    width: 40px;
+    height: 36px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+}
+
+.viewer3d__seg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.viewer3d__seg-lbl {
+  margin-right: 2px;
+}
+
+.viewer3d__note--tight {
+  margin: 2px 0 6px;
+}
+
+.viewer3d__btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.viewer3d__range:disabled {
+  opacity: 0.45;
+}
+
+.viewer3d__btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  border: none;
+}
+
+/* 3Dビューワー: 衛星ボタンの間隔・紅葉の行・移動パッド */
+.viewer3d__ground {
+  margin-right: 0;
+}
+
+.viewer3d__draw {
+  margin-right: 14px;
+}
+
+/* 狭い画面(スマホ)では、描画ボタンは絵だけにして、題名の場所を残す */
+@media (max-width: 520px) {
+  .viewer3d__draw-text {
+    display: none;
+  }
+
+  .viewer3d__draw {
+    margin-right: 6px;
+  }
+}
+
+.viewer3d__sec-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.viewer3d__seg {
+  flex-wrap: wrap;
+}
+
+.viewer3d__step--on {
+  background: #2563eb;
+}
+
+.viewer3d__pad {
+  position: absolute;
+  left: max(12px, env(safe-area-inset-left, 0px));
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(3, 44px);
+  gap: 4px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.viewer3d__padbtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 15px;
+  color: #fff;
+  background: rgba(10, 18, 36, 0.62);
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: none;
+  border: none;
+}
+
+.viewer3d__padbtn:active {
+  background: rgba(37, 99, 235, 0.8);
+}
+
+.viewer3d__padbtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.viewer3d__padkey {
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+.viewer3d__padbtn--w {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.viewer3d__padbtn--a {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.viewer3d__padbtn--home {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.viewer3d__padbtn--d {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.viewer3d__padbtn--s {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* Shift=上昇・Ctrl=下降(パッドの上の2つの角) */
+.viewer3d__padbtn--up {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.viewer3d__padbtn--dn {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* マウスで使うパソコンでは、キーボード(WASD)で動かせるので、画面のパッドは出さない(タッチ操作の端末だけ出す) */
+@media (hover: hover) and (pointer: fine) {
+  .viewer3d__pad {
+    display: none;
+  }
+}
+
+/*
+  「絵文字を廃止してLucideアイコンに」への対応。文字の中に置くアイコン(components/Ico.tsx)は、
+  文字の大きさ(em)に合わせ、色は文字色を引き継ぐ。ボタンの中でも縮まないようにする。
+*/
+.ico {
+  display: inline-block;
+  vertical-align: -0.17em;
+  flex: none;
+}
+
+/*
+  スマホ(幅720px以下)では、上の行に「現在地を取得」と「表示レイヤー」があって狭いので、検索は2行目に全幅で置き、
+  左上の樹種チェックリスト・位置情報のエラーはその下へずらす。Android版(現在地ボタン無し)は、検索を1行目の左に置く。
+*/
+@media (max-width: 720px) {
+  .place-search {
+    top: calc(env(safe-area-inset-top, 0px) + 52px);
+    left: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .place-search--left {
+    top: calc(env(safe-area-inset-top, 0px) + 12px);
+    width: calc(100vw - 12px - 184px);
+  }
+
+  .koyo-species {
+    top: calc(env(safe-area-inset-top, 0px) + 92px);
+  }
+
+  .app__toast--location {
+    top: calc(env(safe-area-inset-top, 0px) + 92px);
+  }
+}

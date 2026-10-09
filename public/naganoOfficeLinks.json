@@ -1,0 +1,58 @@
+[
+  {
+    "id": "saku",
+    "name": "佐久建設事務所",
+    "lat": 36.24889,
+    "lng": 138.476944,
+    "url": "http://www.avis.ne.jp/~chouken/saku/top.html"
+  },
+  {
+    "id": "ueda",
+    "name": "上田建設事務所",
+    "lat": 36.401978,
+    "lng": 138.248672,
+    "url": "http://www.avis.ne.jp/~chouken/ueda/top.html"
+  },
+  {
+    "id": "suwa",
+    "name": "諏訪建設事務所",
+    "lat": 36.039165,
+    "lng": 138.114166,
+    "url": "http://suwa.pref-nagano-roadcamera.jp/"
+  },
+  {
+    "id": "iida",
+    "name": "飯田建設事務所・下伊那南部建設事務所",
+    "lat": 35.515007,
+    "lng": 137.821518,
+    "url": "http://iida.pref-nagano-roadcamera.jp/"
+  },
+  {
+    "id": "kiso",
+    "name": "木曽建設事務所",
+    "lat": 35.841755,
+    "lng": 137.691223,
+    "url": "http://www.avis.ne.jp/~chouken/kiso/top.html"
+  },
+  {
+    "id": "omachi",
+    "name": "大町建設事務所",
+    "lat": 36.502983,
+    "lng": 137.850922,
+    "url": "http://www.avis.ne.jp/~chouken/oomachi/top3.html"
+  },
+  {
+    "id": "nagano",
+    "name": "長野建設事務所",
+    "lat": 36.648537,
+    "lng": 138.194824,
+    "url": "http://www.avis.ne.jp/~chouken/nagano/top.html"
+  },
+  {
+    "id": "suzaka",
+    "name": "須坂建設事務所",
+    "lat": 36.6511,
+    "lng": 138.307251,
+    "url": "http://www.avis.ne.jp/~chouken/suzaka/top.html"
+  }
+]

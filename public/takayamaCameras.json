@@ -1,0 +1,708 @@
+[
+  {
+    "id": "a01",
+    "name": "中山",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.449318,
+    "lng": 137.250854,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411220.jpg"
+  },
+  {
+    "id": "a02",
+    "name": "横山(北)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.4557,
+    "lng": 137.279968,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411160.jpg"
+  },
+  {
+    "id": "a03",
+    "name": "横山(南)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.4557,
+    "lng": 137.279968,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411150.jpg"
+  },
+  {
+    "id": "a04",
+    "name": "杉山",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.450336,
+    "lng": 137.300354,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411110.jpg"
+  },
+  {
+    "id": "a05",
+    "name": "東茂住",
+    "area": "飛騨北部",
+    "direction": "富山側を望む",
+    "lat": 36.436745,
+    "lng": 137.28981,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411100.jpg"
+  },
+  {
+    "id": "a06",
+    "name": "土",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.416355,
+    "lng": 137.300949,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411090.jpg"
+  },
+  {
+    "id": "a07",
+    "name": "東漆山(北)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.388508,
+    "lng": 137.285324,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411080.jpg"
+  },
+  {
+    "id": "a08",
+    "name": "東漆山(南)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.388508,
+    "lng": 137.285324,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411070.jpg"
+  },
+  {
+    "id": "a09",
+    "name": "二ツ屋",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.357067,
+    "lng": 137.259125,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411060.jpg"
+  },
+  {
+    "id": "a10",
+    "name": "割石",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.358543,
+    "lng": 137.280502,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411050.jpg"
+  },
+  {
+    "id": "a11",
+    "name": "船津(北)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.337543,
+    "lng": 137.289764,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411040.jpg"
+  },
+  {
+    "id": "a12",
+    "name": "船津(南)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.337543,
+    "lng": 137.289764,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411030.jpg"
+  },
+  {
+    "id": "a13",
+    "name": "寺林",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.323841,
+    "lng": 137.272385,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411020.jpg"
+  },
+  {
+    "id": "a14",
+    "name": "堀之内",
+    "area": "飛騨北部",
+    "direction": "富山側を望む",
+    "lat": 36.32069,
+    "lng": 137.260788,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411010.jpg"
+  },
+  {
+    "id": "a15",
+    "name": "西(北)",
+    "area": "飛騨北部",
+    "direction": "富山側を望む",
+    "lat": 36.305824,
+    "lng": 137.235016,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20411000.jpg"
+  },
+  {
+    "id": "a16",
+    "name": "西",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.305824,
+    "lng": 137.235016,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410990.jpg"
+  },
+  {
+    "id": "a17",
+    "name": "西(南)",
+    "area": "飛騨北部",
+    "direction": "富山側を望む",
+    "lat": 36.305824,
+    "lng": 137.235016,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410980.jpg"
+  },
+  {
+    "id": "a18",
+    "name": "数河峠(頂上)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.295414,
+    "lng": 137.195984,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410970.jpg"
+  },
+  {
+    "id": "a19",
+    "name": "数河峠(南)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.295414,
+    "lng": 137.195984,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410960.jpg"
+  },
+  {
+    "id": "a20",
+    "name": "戸市(北)",
+    "area": "飛騨北部",
+    "direction": "富山側を望む",
+    "lat": 36.28212,
+    "lng": 137.164581,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410950.jpg"
+  },
+  {
+    "id": "a21",
+    "name": "戸市",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.28212,
+    "lng": 137.164581,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410940.jpg"
+  },
+  {
+    "id": "a22",
+    "name": "戸市(南)",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.28212,
+    "lng": 137.164581,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410930.jpg"
+  },
+  {
+    "id": "a23",
+    "name": "野口",
+    "area": "飛騨北部",
+    "direction": "名古屋側を望む",
+    "lat": 36.277626,
+    "lng": 137.138474,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410910.jpg"
+  },
+  {
+    "id": "b01",
+    "name": "杉崎",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.261166,
+    "lng": 137.162994,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/20410900.jpg"
+  },
+  {
+    "id": "b02",
+    "name": "冬頭",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.164013,
+    "lng": 137.241806,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410650.jpg"
+  },
+  {
+    "id": "b03",
+    "name": "石浦(北)",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.122034,
+    "lng": 137.250942,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410640.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "b04",
+    "name": "石浦(南)",
+    "area": "飛騨中部",
+    "direction": "富山側を望む",
+    "lat": 36.075217,
+    "lng": 137.221598,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410620.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "b05",
+    "name": "一の宮(北)",
+    "area": "飛騨中部",
+    "direction": "富山側を望む",
+    "lat": 36.052399,
+    "lng": 137.201263,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410610.jpg"
+  },
+  {
+    "id": "b06",
+    "name": "一の宮(南)",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.052399,
+    "lng": 137.201263,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410600.jpg"
+  },
+  {
+    "id": "b07",
+    "name": "宮峠TN終点",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.052399,
+    "lng": 137.201263,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410591.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "b08",
+    "name": "宮峠TN坑口",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.080357,
+    "lng": 137.273361,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410581.jpg"
+  },
+  {
+    "id": "b09",
+    "name": "西洞",
+    "area": "飛騨中部",
+    "direction": "名古屋側を望む",
+    "lat": 36.059071,
+    "lng": 137.269653,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410550.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "b10",
+    "name": "高山ＩＣ",
+    "area": "飛騨中部",
+    "direction": "富山側を望む",
+    "lat": 36.170719,
+    "lng": 137.227646,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/11580030.jpg"
+  },
+  {
+    "id": "b11",
+    "name": "前原西",
+    "area": "飛騨中部",
+    "direction": "高山ＩＣ側を望む",
+    "lat": 36.149956,
+    "lng": 137.176117,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/11580240.jpg"
+  },
+  {
+    "id": "b12",
+    "name": "牧ヶ洞ＣＢ",
+    "area": "飛騨中部",
+    "direction": "飛騨清見ＩＣ側を望む",
+    "lat": 36.147514,
+    "lng": 137.143158,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/11580490.jpg"
+  },
+  {
+    "id": "b13",
+    "name": "夏厩ＣＢ",
+    "area": "飛騨中部",
+    "direction": "飛騨清見ＩＣ側を望む",
+    "lat": 36.146141,
+    "lng": 137.103638,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/11580870.jpg"
+  },
+  {
+    "id": "b14",
+    "name": "彦谷橋",
+    "area": "飛騨中部",
+    "direction": "飛騨清見ＩＣ側を望む",
+    "lat": 36.157284,
+    "lng": 137.085754,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/11580880.jpg"
+  },
+  {
+    "id": "c01",
+    "name": "無数河(北)",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 36.049229,
+    "lng": 137.257419,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410540.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c02",
+    "name": "無数河(南)",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 36.042227,
+    "lng": 137.255796,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410530.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c03",
+    "name": "引下",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 36.030972,
+    "lng": 137.281342,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410520.jpg"
+  },
+  {
+    "id": "c04",
+    "name": "木賊洞(北)",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 36.019581,
+    "lng": 137.282394,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410510.jpg"
+  },
+  {
+    "id": "c05",
+    "name": "木賊洞(南)",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 36.019581,
+    "lng": 137.282394,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410500.jpg"
+  },
+  {
+    "id": "c06",
+    "name": "長淀",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 36.011429,
+    "lng": 137.285095,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410490.jpg"
+  },
+  {
+    "id": "c07",
+    "name": "渚(北)",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 36.006866,
+    "lng": 137.261078,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410480.jpg"
+  },
+  {
+    "id": "c08",
+    "name": "小坂久々野TN(北)",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 36.003214,
+    "lng": 137.265348,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410460.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c09",
+    "name": "小坂久々野TN(南)",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.983367,
+    "lng": 137.288555,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/10410390.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c10",
+    "name": "門坂(北)",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.980985,
+    "lng": 137.29134,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410360.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c11",
+    "name": "門坂(南)",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.972102,
+    "lng": 137.291757,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410350.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c12",
+    "name": "小坂(北)",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.950978,
+    "lng": 137.2768,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410340.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c13",
+    "name": "小坂(南)",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.943779,
+    "lng": 137.271703,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410330.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c14",
+    "name": "坂下",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.930798,
+    "lng": 137.262512,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410320.jpg"
+  },
+  {
+    "id": "c15",
+    "name": "奥田洞",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.908015,
+    "lng": 137.253817,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410310.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c16",
+    "name": "上村",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.873142,
+    "lng": 137.240509,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410300.jpg"
+  },
+  {
+    "id": "c17",
+    "name": "中呂",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.852581,
+    "lng": 137.236465,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410290.jpg"
+  },
+  {
+    "id": "c18",
+    "name": "下呂洞門北",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.849046,
+    "lng": 137.238519,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410280.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c19",
+    "name": "下呂洞門南",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.841977,
+    "lng": 137.242626,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410270.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c20",
+    "name": "下呂ＴＮ北",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.82522,
+    "lng": 137.245776,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410260.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c21",
+    "name": "三原遮断機",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.792545,
+    "lng": 137.244213,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410160.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c22",
+    "name": "七里橋南",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.779553,
+    "lng": 137.240202,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410150.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c23",
+    "name": "三原梅ヶ平",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.77664,
+    "lng": 137.23224,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410140.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c24",
+    "name": "門原深谷口",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.773144,
+    "lng": 137.222686,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410130.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c25",
+    "name": "深谷橋北",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.77227,
+    "lng": 137.220297,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410120.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c26",
+    "name": "門原洞門北",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.766139,
+    "lng": 137.211063,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410110.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、キロポストが確認できなかったこのカメラは、キロポストで座標を特定できた前後のカメラ(深谷橋北101.1KP・門原神明神社前98.1KP)の中間(99.6KP相当)に按分した座標です。"
+  },
+  {
+    "id": "c27",
+    "name": "門原神明神社前",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.760008,
+    "lng": 137.201829,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410100.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c28",
+    "name": "門原",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.758784,
+    "lng": 137.201222,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410090.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c29",
+    "name": "門原坂下",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.756338,
+    "lng": 137.200007,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410080.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c30",
+    "name": "保井戸八幡神社前",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.751445,
+    "lng": 137.197577,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410070.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c31",
+    "name": "保井戸",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.743611,
+    "lng": 137.19401,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410060.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c32",
+    "name": "中原大橋口",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.729727,
+    "lng": 137.188194,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410050.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c33",
+    "name": "三ッ渕",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.720181,
+    "lng": 137.181495,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410040.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c34",
+    "name": "飛騨谷橋南",
+    "area": "飛騨南部",
+    "direction": "名古屋側を望む",
+    "lat": 35.717187,
+    "lng": 137.178216,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410030.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c35",
+    "name": "地蔵野洞門北",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.70787,
+    "lng": 137.168015,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410020.jpg",
+    "note": "配信元が正確な緯度経度を公開していないため、カメラ画像自体に表示されているキロポスト(距離標)と地名表示を、国土地理院の地名検索APIによる地名の座標と突き合わせて算出した座標です。"
+  },
+  {
+    "id": "c36",
+    "name": "中切遮断機",
+    "area": "飛騨南部",
+    "direction": "富山側を望む",
+    "lat": 35.70787,
+    "lng": 137.168015,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/30410010.jpg"
+  },
+  {
+    "id": "z01",
+    "name": "中部縦貫平湯",
+    "area": "安房峠",
+    "direction": "高山側を望む",
+    "lat": 36.173904,
+    "lng": 137.562256,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/91580020.jpg"
+  },
+  {
+    "id": "z02",
+    "name": "中部縦貫中ノ湯",
+    "area": "安房峠",
+    "direction": "高山側を望む",
+    "lat": 36.221169,
+    "lng": 137.686646,
+    "imageUrl": "https://www.cbr.mlit.go.jp/takayama/cctv/cctv_img/91580010.jpg"
+  }
+]
